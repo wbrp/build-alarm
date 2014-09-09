@@ -22,4 +22,5 @@ Clone and initialize submodules::
 
 Build and upload::
 
+    $ cd arduino
     $ make upload
