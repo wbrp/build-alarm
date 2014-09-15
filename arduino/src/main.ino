@@ -1,4 +1,4 @@
-#define LED_PIN 13
+#define LAMP_PIN 8
 #define SERIAL_MAX_READ_BYTES 80
 
 
@@ -23,7 +23,7 @@ void setup() {
     Serial.begin(19200);
 
     // Set output pins
-    pinMode(LED_PIN, OUTPUT);
+    pinMode(LAMP_PIN, OUTPUT);
 }
 
 
@@ -33,8 +33,8 @@ void loop() {
     status = line_from_serial[0];
 
     if (status == '0') {
-        digitalWrite(LED_PIN, LOW);
+        digitalWrite(LAMP_PIN, LOW);
     } else if (status == '1') {
-        digitalWrite(LED_PIN, HIGH);
+        digitalWrite(LAMP_PIN, HIGH);
     }
 }

@@ -21,11 +21,7 @@ class Arduino:
 
     def loop(self):
         while True:
-            for i in range(2):
-                self.blink(.6)
-            for i in range(3):
-                self.blink(.1)
-            time.sleep(.5)
+            self.blink(2)
 
     def close(self):
         self.ser.close()
