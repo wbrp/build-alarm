@@ -1,7 +1,7 @@
 Build Alarm
 ===========
 
-A small build alarm program to connect Jenkins to the 
+A small build alarm program to connect Jenkins to an alarm light.
 
 Building
 --------
