@@ -34,8 +34,18 @@ We use a transistor for switching the lamp on and off.
 
 .. image:: transistor.jpg
 
-Connect the wires as follows:
+Connect the wires to the Arduino as follows:
 
 :Red: 5V
 :White: GND
 :Blue: Pin 8
+
+
+3. Start Program
+----------------
+
+Connect the Arduino to a computer via USB. Then run the Python program. ::
+
+    $ cd python
+    $ pip install -r requirements.txt
+    $ ./build-alarm-control.py
