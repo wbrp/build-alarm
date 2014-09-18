@@ -3,8 +3,9 @@ Build Alarm
 
 A small build alarm program to connect Jenkins to an alarm light.
 
-Building
---------
+
+1. Program Arduino
+------------------
 
 Requirements (on ArchLinux)::
 
@@ -24,3 +25,17 @@ Build and upload::
 
     $ cd arduino
     $ make upload
+
+
+2. Wiring
+---------
+
+We use a transistor for switching the lamp on and off.
+
+.. image:: transistor.jpg
+
+Connect the wires as follows:
+
+:Red: 5V
+:White: GND
+:Blue: Pin 8
