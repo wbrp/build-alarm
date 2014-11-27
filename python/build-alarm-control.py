@@ -1,10 +1,12 @@
 #!/usr/bin/env python3
-import ast
 import sys
 import time
 import urllib.request
 
 import serial
+
+
+SLEEP_DURATION = 5
 
 
 class BuildLamp:
@@ -30,25 +32,30 @@ class BuildLamp:
         self.ser.close()
 
 
-def get_failing_tests(api_url):
-    # Do API request
-    response = urllib.request.urlopen(api_url)
-    content = response.read().decode('utf8')
-    data = ast.literal_eval(content)
+def test_is_failing(build_badge_url):
+    """
+    Return whether the test with the specified build badge is failing.
+    """
 
-    # Process data
-    jobs = data['jobs']
-    tests = [j for j in jobs if j['name'].startswith('test_')]
-    failing = [t for t in tests if t['color'] == 'red']
+    # Fetch build badge
+    response = urllib.request.urlopen(build_badge_url)
 
-    # Return list of failing tests
-    return failing
+    # Check ETag header
+    etag = response.headers.get('ETag')
+
+    # Return whether the test failed
+    if 'failing' in etag:
+        return True
+    elif 'passing' in etag:
+        return False
+    else:
+        raise ValueError('Unknown ETag: %s' % etag)
 
 
 if __name__ == '__main__':
     # Parse arguments
     if len(sys.argv) != 2:
-        print('Usage: %s <jenkins-python-api-url>' % sys.argv[0])
+        print('Usage: %s <jenkins-build-badge-url>' % sys.argv[0])
         sys.exit(1)
 
     # Initialize lamp
@@ -59,12 +66,14 @@ if __name__ == '__main__':
     print('Ready.')
     try:
         while True:
-            failing_tests = get_failing_tests(sys.argv[1])
-            if len(failing_tests) > 0:
+            failing = test_is_failing(sys.argv[1])
+            if failing:
+                print('Test is failing.')
                 lamp.enable()
             else:
+                print('Test is passing.')
                 lamp.disable()
-            time.sleep(3)
+            time.sleep(SLEEP_DURATION)
     except KeyboardInterrupt:
         lamp.disable()
         lamp.close()
