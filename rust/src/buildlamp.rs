@@ -1,5 +1,6 @@
 use std::io::Write;
 
+use serial;
 use serial::{SerialDevice, SerialPortSettings, BaudRate, Error};
 use serial::posix::TTYPort;
 use time::Duration;
@@ -13,9 +14,10 @@ pub struct BuildLamp {
 impl BuildLamp {
 
     /// Return a new BuildLamp instance
-    pub fn new(port: TTYPort) -> BuildLamp {
-        BuildLamp {
-            port: port,
+    pub fn new(port: &str) -> Result<BuildLamp, String> {
+        match serial::open(port) {
+            Ok(p) => Ok(BuildLamp { port: p }),
+            Err(e) => Err(format!("Could not open device {}: {}", port, e)),
         }
     }
 
